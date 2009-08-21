@@ -149,6 +149,7 @@ choice "I/O abstraction model (Port I/O)" \
 	source hardware/radio/rfm12/rfm12_ask-config.in
 	source mcuf/config.in
 	source core/config-usarts.in
+	source services/ledmatrix/config.in
 endmenu
 
 ###############################################################################

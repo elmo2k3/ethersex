@@ -38,6 +38,7 @@
 #include "services/tftp/tftp_state.h"
 #include "services/httpd/httpd_state.h"
 #include "services/jabber/jabber_state.h"
+#include "services/ledmatrix/ledmatrix.h"
 #include "protocols/smtp/sendmail.h"
 #include "protocols/irc/irc_state.h"
 #include "core/tty/tty-vt100-telnet.h"
@@ -98,6 +99,10 @@ typedef union uip_tcp_connection_state {
 #   ifdef PAM_LDAP_SUPPORT
     struct ldap_auth_connection_state_t ldap_auth;
 #   endif
+
+#	ifdef LEDMATRIX_SUPPORT
+	struct tLMS ledmatrix;
+#	endif
 
 } uip_tcp_appstate_t;
 

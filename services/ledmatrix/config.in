@@ -1,0 +1,1 @@
+dep_bool 'Elmos Ledmatrix Module' LEDMATRIX_SUPPORT $TCP_SUPPORT
