@@ -26,6 +26,7 @@ SUBDIRS += hardware/lcd/s1d15g10
 SUBDIRS += hardware/lcd/ST7626
 SUBDIRS += hardware/onewire
 SUBDIRS += hardware/pwm
+SUBDIRS += hardware/sms
 SUBDIRS += hardware/radio/fs20
 SUBDIRS += hardware/radio/rfm12
 SUBDIRS += hardware/storage/dataflash
@@ -52,6 +53,7 @@ SUBDIRS += protocols/ecmd/via_tcp
 SUBDIRS += protocols/ecmd/via_udp
 SUBDIRS += protocols/ecmd/via_usart
 SUBDIRS += protocols/irc
+SUBDIRS += protocols/soap
 SUBDIRS += protocols/twitter
 SUBDIRS += protocols/netstat
 SUBDIRS += protocols/to1
@@ -111,15 +113,21 @@ debug:
 	@echo SRC: ${SRC}
 	@echo y_SRC: ${y_SRC}
 	@echo y_ECMD_SRC: ${y_ECMD_SRC}
+	@echo y_SOAP_SRC: ${y_SOAP_SRC}
 
 meta.m4: ${SRC} ${y_SRC} .config
 	@echo "Build meta files"
 	@sed -ne '/Ethersex META/{n;:loop p;n;/\*\//!bloop }' ${SRC} ${y_SRC} > $@
 
+$(ECMD_PARSER_SUPPORT)_NP_SIMPLE_META_SRC = protocols/ecmd/ecmd_defs.m4 ${named_pin_simple_files}
+$(SOAP_SUPPORT)_NP_SIMPLE_META_SRC = protocols/ecmd/ecmd_defs.m4 ${named_pin_simple_files}
+
 y_META_SRC += scripts/meta_magic.m4
 $(ECMD_PARSER_SUPPORT)_META_SRC += protocols/ecmd/ecmd_magic.m4
+$(SOAP_SUPPORT)_META_SRC += protocols/soap/soap_magic.m4
 y_META_SRC += meta.m4
 $(ECMD_PARSER_SUPPORT)_META_SRC += protocols/ecmd/ecmd_defs.m4 ${named_pin_simple_files}
+y_META_SRC += $(y_NP_SIMPLE_META_SRC)
 
 meta.c: $(y_META_SRC)
 	@m4 $^ > $@
@@ -131,6 +139,7 @@ compile-$(TARGET): $(TARGET).hex $(TARGET).bin
 .SILENT: compile-$(TARGET)
 
 ${ECMD_PARSER_SUPPORT}_SRC += ${y_ECMD_SRC}
+${SOAP_SUPPORT}_SRC += ${y_SOAP_SRC}
 
 OBJECTS += $(patsubst %.c,%.o,${SRC} ${y_SRC} meta.c)
 OBJECTS += $(patsubst %.S,%.o,${ASRC} ${y_ASRC})
