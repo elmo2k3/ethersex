@@ -3,7 +3,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -19,20 +19,36 @@
  * http://www.gnu.org/copyleft/gpl.html
  */
 
-#ifndef HAVE_MYSQL_H
-#define HAVE_MYSQL_H
+#ifndef NMEA_H
+#define NMEA_H 1
 
-#define MYSQL_SERVER_PROTO_VERSION 10
+#include <stdint.h>
 
-void mysql_init (void);
-void mysql_periodic (void);
-uint8_t mysql_send_message (char *message);
+/* 
+   Example data:
+   $GPGGA,174014.360,4923.1834,N,01011.2252,E,1,04
 
-#ifdef DEBUG_MYSQL
-# include "core/debug.h"
-# define MYDEBUG(a...)  debug_printf("mysql: " a)
-#else
-# define MYDEBUG(a...)
-#endif
+   01234567890123456789012345678901234567890123456
+   0         1         2         3         4
+ */
 
-#endif  /* HAVE_MYSQL_H */
+struct nmea_t
+{
+  unsigned locked	: 1;
+  unsigned valid	: 1;
+  unsigned ptr		: 6;
+
+  uint8_t latitude[9];
+  uint8_t latitude_dir;
+
+  uint8_t longitude[10];
+  uint8_t longitude_dir;
+
+  uint8_t satellites;
+};
+
+extern struct nmea_t nmea_data;
+
+void nmea_init(void);
+
+#endif	/* NMEA_H */
