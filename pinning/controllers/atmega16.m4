@@ -28,5 +28,9 @@ pin(SPI_SCK, PB7, OUTPUT)
 pin(SPI_CS_HARDWARE, PB4, OUTPUT)
 ')dnl
 
+ifdef(`conf_STELLA', `dnl
+  STELLA_PORT_RANGE(PD4,PD7)
+')dnl
+
 #define NET_MAX_FRAME_LENGTH 192
 #define ADC_CHANNELS 8

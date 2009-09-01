@@ -16,6 +16,7 @@ dep_bool_menu "StellaLight: Multichannel pwm" STELLA_SUPPORT
 		'0%' STELLA_START
 	fi
 	int "Fade step" STELLA_FADE_STEP_INIT 10
+	dep_bool 'Simple udp server (4477)' STELLA_UDP_SIMPLE
 	choice 'Fade function'			\
 	"Normal stella_fade_func_0	\
 	Flashy stella_fade_func_1"	\
